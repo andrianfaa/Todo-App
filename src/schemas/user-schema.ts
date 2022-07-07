@@ -1,5 +1,5 @@
-import { Schema, model } from "mongoose";
 import Crypto from "crypto";
+import { model, Schema } from "mongoose";
 
 export interface UserSchemaType {
   uid: string;

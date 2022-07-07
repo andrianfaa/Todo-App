@@ -1,4 +1,4 @@
-import type { Request, Response, NextFunction } from "express";
+import type { NextFunction, Request, Response } from "express";
 import { ApiResponse } from "../helpers";
 
 const ApiKeyMiddleware = async (req: Request, res: Response, next: NextFunction): Promise<void | Response> => {
