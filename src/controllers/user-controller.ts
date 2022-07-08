@@ -33,12 +33,14 @@ const UserControllers = {
         user: {
           name,
           email,
-          password: Crypto.createHash("sha512").update(password).digest("base64url"),
+          password: Crypto.createHash("sha512").update(password).digest("hex"),
         },
       });
       const savedUser = await user.save();
 
       if (!savedUser) throw new CustomError("Error saving user", 500);
+
+      const verificationToken = Crypto.createHmac("sha256", savedUser.uid).update(savedUser.accessToken).digest("base64url");
 
       await Mailer<{ name: string, link: string }>({
         from: process.env.MAILER_FROM as string || "noreply@mail.andriann.co",
@@ -47,7 +49,7 @@ const UserControllers = {
         subject: "Verify your email address",
         data: {
           name,
-          link: `${process.env.CLIENT_URL}/api/v1/user/verify-email?t=${savedUser.accessToken}&e=${savedUser.user.email}`,
+          link: `${process.env.CLIENT_URL}/api/v1/user/verify-email?t=${verificationToken}&e=${savedUser.user.email}`,
         },
       }).catch((err) => {
         throw new CustomError(err.message, 500);
