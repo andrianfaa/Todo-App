@@ -133,6 +133,7 @@ const UserControllers = {
 
       if (!user) throw new CustomError("User not found", 404);
       if (user.accessToken !== token) throw new CustomError("Invalid token", 400);
+      if (user.verified) throw new CustomError("User already verified", 400);
 
       const updatedUser = await UserSchema.findOneAndUpdate({ "user.email": email }, { $set: { verified: true } });
 
