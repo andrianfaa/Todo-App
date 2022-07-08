@@ -9,6 +9,7 @@ export interface UserSchemaType {
     email: string;
     password: string;
   };
+  verified: boolean;
   createdAt: number;
 }
 
@@ -35,6 +36,10 @@ const UserSchema = new Schema<UserSchemaType>({
       type: String,
       required: true,
     },
+  },
+  verified: {
+    type: Boolean,
+    default: false,
   },
   createdAt: {
     type: Number,

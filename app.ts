@@ -10,6 +10,7 @@ import http from "http";
 import type { ConnectOptions } from "mongoose";
 import mongoose from "mongoose";
 import morgan from "morgan";
+import Routes from "./src/routes";
 
 const isDev = process.env.NODE_ENV === "development";
 
@@ -68,6 +69,7 @@ app.use(morgan("dev"));
 
 // Setup express routes
 app.get("/", cache, (req: Request, res: Response): Response => res.status(200).send("Server is running"));
+app.use("/api/v1", Routes);
 
 export {
   server,
