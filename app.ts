@@ -12,18 +12,18 @@ import mongoose from "mongoose";
 import morgan from "morgan";
 import Routes from "./src/routes";
 
-const isDev = process.env.NODE_ENV === "development";
+const isProduction = process.env.NODE_ENV === "production";
 
 dotenv.config({
-  path: `${process.cwd()}/config/${isDev ? ".env.development" : ".env"}`,
+  path: `${process.cwd()}/config/${isProduction ? ".env" : ".env.development"}`,
 });
 
 // Initialize express
 const app = express();
 const server = http.createServer(app);
 const cache = ApiCache.middleware("1 minute");
-const PORT = process.env.PORT || isDev ? 5000 : 3000;
-const MONGODB_URI: string | null = process.env.MONGODB_URI || null;
+const PORT = process.env.PORT || isProduction ? 3000 : 5000;
+const MONGODB_URI: string = process.env.MONGODB_URI as string;
 const ALLOWED_ORIGINS = process.env.ALLOWED_ORIGINS?.split(",").map((origin) => origin.trim()) ?? [];
 const CORS_OPTIONS: CorsOptionsDelegate<Request> = (req, callback) => {
   const origin: CorsOptions = {
@@ -42,20 +42,12 @@ const CORS_OPTIONS: CorsOptionsDelegate<Request> = (req, callback) => {
   return callback(null, origin);
 };
 
-if (!MONGODB_URI) throw new Error("MONGODB_URI is not defined");
-
 // Connect to MongoDB
 mongoose.connect(MONGODB_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
-} as ConnectOptions, (err) => {
-  if (err) {
-    throw new Error(`Error connecting to MongoDB: ${err.message}`);
-    process.exit(1);
-  }
-
-  // eslint-disable-next-line no-console
-  console.info("Connected to MongoDB");
+} as ConnectOptions).catch((err) => {
+  console.error(err);
 });
 
 // Setup express middleware
@@ -74,4 +66,5 @@ app.use("/api/v1", Routes);
 export {
   server,
   PORT,
+  app,
 };
