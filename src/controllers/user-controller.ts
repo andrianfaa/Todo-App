@@ -40,7 +40,7 @@ const UserControllers = {
 
       if (!savedUser) throw new CustomError("Error saving user", 500);
 
-      const verificationToken = Crypto.createHmac("sha256", savedUser.uid).update(savedUser.accessToken).digest("base64url");
+      const verificationToken = Crypto.createHash("sha256").update(savedUser.accessToken).digest("base64url");
 
       await Mailer<{ name: string, link: string }>({
         from: process.env.MAILER_FROM as string || "noreply@mail.andriann.co",
@@ -51,9 +51,10 @@ const UserControllers = {
           name,
           link: `${process.env.CLIENT_URL}/api/v1/user/verify-email?t=${verificationToken}&e=${savedUser.user.email}`,
         },
-      }).catch((err) => {
-        throw new CustomError(err.message, 500);
-      });
+      })
+        .catch((err) => {
+          throw new CustomError(err.message, 500);
+        });
 
       return ApiResponse.success(res, 201, {
         message: "User created successfully",
@@ -80,10 +81,10 @@ const UserControllers = {
     }
 
     try {
-      if (!mailChecker.isValid) throw new CustomError("Invalid email", 400);
+      if (!mailChecker.isValid(email)) throw new CustomError("Invalid email", 400);
 
       const user = await UserSchema.findOne({ "user.email": email });
-      const hashedPassword = Crypto.createHash("sha512").update(password).digest("base64url");
+      const hashedPassword = Crypto.createHash("sha512").update(password).digest("hex");
 
       if (!user) throw new CustomError("User not found", 404);
       if (!user.verified) throw new CustomError("User not verified", 401);
@@ -98,7 +99,9 @@ const UserControllers = {
 
       return ApiResponse.success(res, 200, {
         message: "User logged in successfully",
-        token,
+        data: {
+          token,
+        },
       });
     } catch (error) {
       if (error instanceof CustomError) {
