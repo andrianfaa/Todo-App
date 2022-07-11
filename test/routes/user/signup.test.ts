@@ -1,15 +1,11 @@
 import request from "supertest";
 import { server } from "../../../app";
 import { UserSchema } from "../../../src/schemas";
+import { user as testUser } from "../../helpers/dummy_data";
 
 jest.setTimeout(10000);
 
 describe("Test the /user/signup endpoint", () => {
-  const testUser = {
-    name: "Test User",
-    email: "anfaa082003@gmail.com",
-    password: "test123",
-  };
   const apiKey = process.env.API_KEY as string;
 
   afterAll(async () => {
