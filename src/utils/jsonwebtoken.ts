@@ -11,7 +11,11 @@ const JSONWebToken = {
   sign: (payload: any, exp = "1d"): string => {
     const jwtSecret = process.env.JWT_SECRET as string;
 
-    return jwt.sign(payload, jwtSecret, { expiresIn: exp });
+    const token = jwt.sign(payload, jwtSecret, {
+      expiresIn: exp,
+    });
+
+    return token;
   },
 
   /**
@@ -19,10 +23,15 @@ const JSONWebToken = {
    * @param token - JWT token to be decoded
    * @example JSONWebToken.verify(__token__);
    */
-  verify: <T>(token: string): T => {
+  verify: async <T>(token: string): Promise<null | T> => {
     const jwtSecret = process.env.JWT_SECRET as string;
 
-    return jwt.verify(token, jwtSecret) as T;
+    try {
+      const payload = await jwt.verify(token, jwtSecret);
+      return payload as T;
+    } catch (error) {
+      return null;
+    }
   },
 };
 

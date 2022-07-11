@@ -9,13 +9,13 @@ const ApiKeyMiddleware = async (req: Request, res: Response, next: NextFunction)
 
   if (!requestApikey) {
     return ApiResponse.error(res, 401, {
-      message: "API key is missing",
+      message: "Unauthorized",
     });
   }
 
   if (apikey !== requestApikey) {
     return ApiResponse.error(res, 401, {
-      message: "Invalid API key",
+      message: "Unauthorized",
     });
   }
 
