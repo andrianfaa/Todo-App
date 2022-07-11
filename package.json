@@ -9,7 +9,7 @@
   "scripts": {
     "dev": "cross-env NODE_ENV=development nodemon server.ts",
     "lint": "eslint --ext .ts,.js src --fix",
-    "test": "jest --runInBand --forceExit"
+    "test": "cross-env NODE_ENV=development jest --runInBand --forceExit"
   },
   "author": "https://www.andriann.co",
   "license": "ISC",

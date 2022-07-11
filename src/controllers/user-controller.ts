@@ -135,7 +135,10 @@ const UserControllers = {
       const user = await UserSchema.findOne({ "user.email": email });
 
       if (!user) throw new CustomError("User not found", 404);
-      if (user.accessToken !== token) throw new CustomError("Invalid token", 400);
+
+      const hashedAccessToken = Crypto.createHash("sha256").update(user.accessToken).digest("base64url");
+
+      if (hashedAccessToken !== token) throw new CustomError("Invalid token", 400);
       if (user.verified) throw new CustomError("User already verified", 400);
 
       const updatedUser = await UserSchema.findOneAndUpdate({ "user.email": email }, { $set: { verified: true } });

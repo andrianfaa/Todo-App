@@ -21,7 +21,7 @@ const ApiResponse = {
    * });
    * ```
    */
-  success: <T = null>(res: Response, code: number, options: T): Response => res.status(code).json({
+  success: <T = null>(res: Response, code: number, options: ApiResponseType<T>): Response => res.status(code).json({
     status: "success",
     statusCode: code,
     ...options,
@@ -39,7 +39,7 @@ const ApiResponse = {
    * });
    * ```
    */
-  error: <T = null>(res: Response, code: number, options: T): Response => res.status(code).json({
+  error: <T = null>(res: Response, code: number, options: ApiResponseType<T>): Response => res.status(code).json({
     status: "error",
     statusCode: code,
     ...options,

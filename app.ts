@@ -1,3 +1,5 @@
+/// <reference types="./express-env" />
+
 import ApiCache from "apicache";
 import bodyParser from "body-parser";
 import type { CorsOptions, CorsOptionsDelegate } from "cors";
@@ -12,17 +14,17 @@ import mongoose from "mongoose";
 import morgan from "morgan";
 import Routes from "./src/routes";
 
-const isProduction = process.env.NODE_ENV === "production";
+const isDevelopment = process.env.NODE_ENV === "development";
 
 dotenv.config({
-  path: `${process.cwd()}/config/${isProduction ? ".env" : ".env.development"}`,
+  path: `${process.cwd()}/config/${isDevelopment ? ".env.development" : ".env"}`,
 });
 
 // Initialize express
 const app = express();
 const server = http.createServer(app);
 const cache = ApiCache.middleware("1 minute");
-const PORT = process.env.PORT || isProduction ? 3000 : 5000;
+const PORT = process.env.PORT || isDevelopment ? 5000 : 3000;
 const MONGODB_URI: string = process.env.MONGODB_URI as string;
 const ALLOWED_ORIGINS = process.env.ALLOWED_ORIGINS?.split(",").map((origin) => origin.trim()) ?? [];
 const CORS_OPTIONS: CorsOptionsDelegate<Request> = (req, callback) => {
