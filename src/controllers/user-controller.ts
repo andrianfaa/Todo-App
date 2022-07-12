@@ -10,14 +10,17 @@ type SignupRequestBody = {
   name: string;
   email: string;
   password: string;
+  projectUrl: string;
 }
 
 const UserControllers = {
   // Function to handle user signup request
   signup: async (req: Request & { body: SignupRequestBody }, res: Response) => {
-    const { name, email, password } = req.body;
+    const {
+      name, email, password, projectUrl,
+    } = req.body;
 
-    if (!name || !email || !password) {
+    if (!name || !email || !password || !projectUrl) {
       return ApiResponse.error(res, 400, {
         message: "Missing required fields",
       });
@@ -49,7 +52,7 @@ const UserControllers = {
         subject: "Verify your email address",
         data: {
           name,
-          link: `${process.env.BASE_URL}/api/v1/user/verify-email?t=${verificationToken}&e=${savedUser.user.email}`,
+          link: `${projectUrl}/verify-email?email=${savedUser.user.email}&token=${verificationToken}`,
         },
       })
         .catch(async (err) => {
