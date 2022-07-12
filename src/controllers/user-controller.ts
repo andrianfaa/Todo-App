@@ -49,10 +49,11 @@ const UserControllers = {
         subject: "Verify your email address",
         data: {
           name,
-          link: `${process.env.CLIENT_URL}/api/v1/user/verify-email?t=${verificationToken}&e=${savedUser.user.email}`,
+          link: `${process.env.BASE_URL}/api/v1/user/verify-email?t=${verificationToken}&e=${savedUser.user.email}`,
         },
       })
-        .catch((err) => {
+        .catch(async (err) => {
+          await UserSchema.deleteOne({ uid: savedUser.uid });
           throw new CustomError(err.message, 500);
         });
 

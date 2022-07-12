@@ -9,7 +9,9 @@
   "scripts": {
     "dev": "cross-env NODE_ENV=development nodemon server.ts",
     "lint": "eslint --ext .ts,.js src --fix",
-    "test": "cross-env NODE_ENV=development jest --runInBand --forceExit"
+    "test": "cross-env NODE_ENV=development jest --runInBand --forceExit",
+    "build": "tsc -p tsconfig.json",
+    "start": "node ./dist/server.js"
   },
   "author": "https://www.andriann.co",
   "license": "ISC",
