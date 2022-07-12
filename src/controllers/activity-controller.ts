@@ -2,7 +2,7 @@ import type { Response } from "express";
 import Crypto from "crypto";
 import EscapeHTML from "escape-html";
 import { CustomError } from "../utils";
-import { ActivitySchema, UserSchema } from "../schemas";
+import { ActivitySchema, UserSchema, TodoSchema } from "../schemas";
 import { ApiResponse } from "../helpers";
 
 interface CreateActivityRequestBody {
@@ -121,8 +121,9 @@ const ActivityControllers = {
       if (!activity) throw new CustomError("Activity does not exist", 404);
 
       const deletedActivity = await activity.remove();
+      const deletedTodos = await TodoSchema.deleteMany({ activityId });
 
-      if (!deletedActivity) throw new CustomError("Error deleting activity", 500);
+      if (!deletedActivity || !deletedTodos) throw new CustomError("Error deleting activity", 500);
 
       return ApiResponse.success(res, 200, {
         message: "Activity deleted successfully",
