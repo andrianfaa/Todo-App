@@ -91,9 +91,7 @@ function SignUpPage() {
 
   return (
     <div className="container lg:max-w-7xl min-h-screen mx-auto p-6 text-center flex flex-row items-center justify-center fade-in">
-      <div className="w-full flex-1 hidden lg:flex lg:items-center lg:justify-center">
-        <Logo className="text-primary w-1/3 h-1/3" />
-      </div>
+      <div className="w-full flex-1 hidden lg:flex lg:items-center lg:justify-center" />
       <div className="w-full flex-1 md:max-w-lg flex items-center justify-center">
         <div className="w-full lg:text-left">
           <form onSubmit={handleOnSubmit} className="max-w-full">
