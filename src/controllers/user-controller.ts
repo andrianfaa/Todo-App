@@ -105,6 +105,7 @@ const UserControllers = {
         message: "User logged in successfully",
         data: {
           token,
+          uid: user.uid,
         },
       });
     } catch (error) {
@@ -151,6 +152,35 @@ const UserControllers = {
 
       return ApiResponse.success(res, 200, {
         message: "User verified successfully",
+      });
+    } catch (error) {
+      if (error instanceof CustomError) {
+        return ApiResponse.error(res, error.statusCode, error.getMessage());
+      }
+
+      return ApiResponse.error(res, 500, {
+        message: "Internal server error",
+      });
+    }
+  },
+
+  getUser: async (req: CustomRequest, res: Response) => {
+    const { uid } = req.user as { uid: string };
+
+    if (!uid) {
+      return ApiResponse.error(res, 400, {
+        message: "Missing required fields",
+      });
+    }
+
+    try {
+      const user = await UserSchema.findOne({ uid }).select("-user.password -_id -__v -accessToken -uid -verified -createdAt");
+
+      if (!user) throw new CustomError("User not found", 404);
+
+      return ApiResponse.success(res, 200, {
+        message: "User found successfully",
+        data: user,
       });
     } catch (error) {
       if (error instanceof CustomError) {
