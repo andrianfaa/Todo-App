@@ -21,6 +21,11 @@
       @apply border-primary bg-primary text-white;
       @apply hover:bg-primary-dark hover:border-primary-dark;
     }
+
+    &-danger {
+      @apply border-red-500 bg-red-500 text-white;
+      @apply hover:bg-red-700 hover:border-red-700;
+    }
   }
 
   .modal {

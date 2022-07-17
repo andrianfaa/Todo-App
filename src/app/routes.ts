@@ -3,6 +3,7 @@ import { ReactNode } from "react";
 import LoginPage from "pages/loginPage";
 import SignUpPage from "pages/signupPage";
 import VerifyEmailPage from "pages/verifyEmailPage";
+import HomePage from "pages/homePage";
 
 export interface RouteType {
   path: string;
@@ -30,6 +31,13 @@ const PublicRoute: RouteType[] = [
   },
 ];
 
-const PrivateRoute: RouteType[] = [];
+const PrivateRoute: RouteType[] = [
+  {
+    path: "/",
+    name: "Home",
+    isPrivate: true,
+    element: HomePage,
+  },
+];
 
 export { PublicRoute, PrivateRoute };

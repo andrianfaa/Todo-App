@@ -15,6 +15,13 @@ export type SignUpRequest = LoginRequest & {
   projectUrl: string;
 }
 
+export type GetInfoResponse = {
+  user: {
+    name: string;
+    email: string;
+  }
+}
+
 export const sessionService = createApi({
   reducerPath: "session",
   baseQuery,
@@ -35,6 +42,16 @@ export const sessionService = createApi({
       }),
     }),
 
+    user: builder.query<HttpResponse<GetInfoResponse>, string | null>({
+      query: (token) => ({
+        url: "/user/info",
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }),
+    }),
+
     // Verify email
     verify: builder.query<HttpResponse<null>, { token: string, email: string }>({
       query: ({ token, email }) => ({
@@ -48,5 +65,6 @@ export const sessionService = createApi({
 export const {
   useLoginMutation,
   useSignupMutation,
+  useUserQuery,
   useVerifyQuery,
 } = sessionService;

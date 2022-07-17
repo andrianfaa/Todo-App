@@ -1,24 +1,21 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { SessionStorage } from "utils";
-
-export type InitialState = {
-  isAuthenticated: boolean;
-  user: {
-    uid: string;
-  } | null;
-  token: string | null;
-}
+import { LocalStorage, SessionStorage } from "utils";
 
 export type AuthPayloadType = {
-  uid: string;
   email: string;
   name: string;
 }
 
+export type InitialState = {
+  isAuthenticated: boolean;
+  user: AuthPayloadType | null;
+  token: string;
+}
+
 const initialState: InitialState = {
   isAuthenticated: false,
-  user: SessionStorage.get<{ uid: string }>("user") || null,
-  token: SessionStorage.get<string>("token") || null,
+  user: SessionStorage.get<{ name: string, email: string }>("user") || null,
+  token: SessionStorage.get<string>("token") || "",
 };
 
 const authSlice = createSlice({
@@ -39,10 +36,10 @@ const authSlice = createSlice({
     logout: (state: InitialState) => {
       state.isAuthenticated = false;
       state.user = null;
-      state.token = null;
+      state.token = "";
 
-      SessionStorage.remove("token");
-      SessionStorage.remove("user");
+      SessionStorage.clear();
+      LocalStorage.clear();
     },
   },
 });

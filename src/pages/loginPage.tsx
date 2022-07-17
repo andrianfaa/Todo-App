@@ -1,8 +1,9 @@
-import { Logo } from "assets";
+import { useAppDispatch, useAppSelector } from "app";
+import { setToken, setAuth } from "features/auth";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import type { LoginRequest } from "services";
-import { useLoginMutation } from "services";
+import { useLoginMutation, useUserQuery } from "services";
 import { ReactNotyf } from "utils";
 
 type FormStateType = LoginRequest;
@@ -22,7 +23,13 @@ function LoginPage() {
     password: "",
   });
 
+  const { token } = useAppSelector((state) => state.auth);
+  const dispatch = useAppDispatch();
+
   const [login, { isLoading }] = useLoginMutation();
+  const { data: userData } = useUserQuery(token, {
+    skip: !token,
+  });
 
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -46,7 +53,11 @@ function LoginPage() {
       .unwrap()
       .then((res) => {
         if (res.statusCode === 200) {
-          ReactNotyf.success("Login Successful");
+          dispatch(setToken(res.data.token));
+
+          if (userData) {
+            dispatch(setAuth(userData?.data.user ?? null));
+          }
         }
       })
       .catch((error) => {
@@ -77,8 +88,8 @@ function LoginPage() {
 
   return (
     <div className="container lg:max-w-7xl min-h-screen mx-auto p-6 text-center flex flex-row items-center justify-center fade-in">
-      <div className="w-full flex-1 hidden lg:flex lg:items-center lg:justify-center" />
-      <div className="w-full flex-1 md:max-w-lg flex items-center justify-center">
+      <section className="w-full flex-1 hidden lg:flex lg:items-center lg:justify-center" />
+      <section className="w-full flex-1 md:max-w-lg flex items-center justify-center">
         <div className="w-full lg:text-left">
           <form onSubmit={handleOnSubmit} className="max-w-full">
             <h1 className="mb-4">Login</h1>
@@ -125,7 +136,7 @@ function LoginPage() {
             </Link>
           </p>
         </div>
-      </div>
+      </section>
     </div>
   );
 }
