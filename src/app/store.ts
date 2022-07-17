@@ -1,10 +1,13 @@
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import { Auth } from "features/auth";
 import { SessionStorage } from "utils";
+// Services
+import { sessionService } from "services";
 
 const rootReducer = combineReducers({
   auth: Auth.reducer,
   // other reducers
+  [sessionService.reducerPath]: sessionService.reducer,
 });
 
 const store = configureStore({
@@ -13,6 +16,7 @@ const store = configureStore({
   middleware: (getDefaultMiddleware) => [
     ...getDefaultMiddleware(),
     // other middleware
+    sessionService.middleware,
   ],
 });
 

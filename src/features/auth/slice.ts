@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { SessionStorage } from "utils";
 
-type InitialState = {
+export type InitialState = {
   isAuthenticated: boolean;
   user: {
     uid: string;
@@ -9,7 +9,7 @@ type InitialState = {
   token: string | null;
 }
 
-type AuthPayloadType = {
+export type AuthPayloadType = {
   uid: string;
   email: string;
   name: string;

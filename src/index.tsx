@@ -1,10 +1,12 @@
+import store from "app/store";
+import AppRouter from "components/router";
 import React from "react";
 import ReactDOM from "react-dom/client";
-import "styles/index.scss";
-import AppRouter from "components/router";
-import reportWebVitals from "reportWebVitals";
 import { Provider } from "react-redux";
-import store from "app/store";
+import reportWebVitals from "reportWebVitals";
+
+import "styles/index.scss";
+import "notyf/notyf.min.css";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement,

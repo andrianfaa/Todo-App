@@ -3,8 +3,9 @@ import {
 } from "@reduxjs/toolkit/query/react";
 import type { RootState } from "app";
 import { logout } from "features/auth";
+import { ReactNotyf } from "utils";
 
-const apiUrl = process.env.REACT_APP_API_URL;
+const apiUrl = `${process.env.REACT_APP_API_URL}/api/v1`;
 
 const baseQuery = fetchBaseQuery({
   baseUrl: apiUrl,
@@ -28,9 +29,16 @@ const baseQueryWithLogout: BaseQueryFn<
   FetchBaseQueryError
 > = async (args, api, extraOptions) => {
   const result = await baseQuery(args, api, extraOptions);
+  const { data } = result as { data: HttpResponse<any> };
 
   if (result.error && result.error.status === 401) {
-    logout();
+    api.dispatch(logout());
+    return result;
+  }
+
+  if (result.error?.status === "FETCH_ERROR") {
+    ReactNotyf.error("Fetch error: Please check your internet connection.");
+    return result;
   }
 
   return result;

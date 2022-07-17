@@ -1,17 +1,17 @@
 @layer base {
   body {
-    font-family: "Satoshi", "Inter", sans-serif;
-    @apply bg-black text-gray-400;
+    font-family: "Inter", sans-serif;
+    @apply bg-white text-slate-500;
   }
 
   h1,
   h2,
   h3 {
-    font-family: "Satoshi", sans-serif;
-    @apply font-semibold;
+    font-family: "Poppins", sans-serif;
+    @apply font-semibold text-slate-800 tracking-tight;
   }
 
   h1 {
-    @apply text-3xl sm:text-4xl md:text-5xl leading-normal sm:leading-tight md:leading-tight;
+    @apply text-4xl sm:text-5xl md:text-6xl leading-normal sm:leading-tight md:leading-tight;
   }
 }

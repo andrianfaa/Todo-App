@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { PublicRoute } from "app/routes";
+import { memo } from "react";
 
 function AppRouter() {
   return (
@@ -15,4 +16,4 @@ function AppRouter() {
   );
 }
 
-export default AppRouter;
+export default memo(AppRouter);

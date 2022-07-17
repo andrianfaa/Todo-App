@@ -1,8 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: [
-    "./src/**/*.{ts,tsx}",
-  ],
+  content: ["./src/**/*.{ts,tsx}"],
   theme: {
     extend: {
       screens: {
@@ -14,6 +12,11 @@ module.exports = {
       },
       colors: ({ colors }) => ({
         ...colors,
+        primary: {
+          DEFAULT: "#005FF9",
+          light: "#85B3FC",
+          dark: "#0043AE",
+        },
       }),
     },
   },
