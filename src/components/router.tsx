@@ -6,8 +6,7 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { useUserQuery } from "services";
 
 function AppRouter() {
-  const { token } = useAppSelector((state) => state.auth);
-
+  const { token } = useAppSelector(({ auth }) => auth);
   const dispatch = useAppDispatch();
   const { data: userData, isError, isSuccess } = useUserQuery(token, {
     skip: !token,

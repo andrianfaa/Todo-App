@@ -1,5 +1,5 @@
 import { useAppDispatch, useAppSelector } from "app";
-import { setToken, setAuth } from "features/auth";
+import { setAuth, setToken } from "features/auth";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import type { LoginRequest } from "services";

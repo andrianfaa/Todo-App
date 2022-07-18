@@ -1,11 +1,11 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-import { useAppSelector, useAppDispatch } from "app";
+import { useAppDispatch, useAppSelector } from "app";
 import { Logo } from "assets";
-import { FaUserAstronaut } from "react-icons/fa";
-import { HiOutlineLogout } from "react-icons/hi";
 import { logout } from "features/auth";
 import { useState } from "react";
+import { FaUserAstronaut } from "react-icons/fa";
+import { HiOutlineLogout } from "react-icons/hi";
 
 function Navbar() {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -13,14 +13,12 @@ function Navbar() {
   const { user } = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
 
-  const handleLogout = () => {
-    dispatch(logout());
-  };
+  const handleLogout = () => dispatch(logout());
 
   return (
     <nav className="border-b border-b-slate-100">
-      <div className="container mx-auto px-6 h-16 flex flex-row justify-between items-center">
-        <Logo className="w-8" />
+      <div className="container mx-auto px-6 h-16 md:h-20 flex flex-row justify-between items-center">
+        <Logo className="w-8 text-primary" />
 
         <div className="flex flex-row items-center relative min-w-[150px] justify-end">
           <span
@@ -37,7 +35,7 @@ function Navbar() {
           />
 
           {isOpen && (
-            <div className="absolute right-0 top-16 bg-white border border-slate-100 rounded py-4 px-6 flex flex-col justify-center items-center text-center">
+            <div className="absolute right-0 top-16 shadow-lg shadow-slate-200 bg-white border border-slate-100 rounded py-4 px-6 flex flex-col justify-center items-center text-center">
               <FaUserAstronaut className="md:hidden hover:text-primary hover:cursor-pointer inline-block w-auto text-5xl mb-4" title={user?.name ?? "User"} />
               <span className="md:hidden font-semibold text-sm text-gray-600 mr-2 whitespace-nowrap">
                 {user?.name ?? "User"}

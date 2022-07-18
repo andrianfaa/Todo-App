@@ -1,7 +1,7 @@
-import { useVerifyQuery } from "services";
 import { useSearchQuery } from "hooks";
 import { BiLoaderAlt } from "react-icons/bi";
-import { IoCloseCircleSharp, IoCheckmarkCircleSharp } from "react-icons/io5";
+import { IoCheckmarkCircleSharp, IoCloseCircleSharp } from "react-icons/io5";
+import { useVerifyQuery } from "services";
 
 type VerifyEmailLocationType = {
   email: string;
