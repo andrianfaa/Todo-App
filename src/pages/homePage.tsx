@@ -1,9 +1,12 @@
 import { useAppSelector } from "app";
 import { ActivityCard, Navbar } from "components";
 import { AiOutlinePlus } from "react-icons/ai";
+import { useGetActivitiesQuery } from "services";
 
 function HomePage() {
-  const { user } = useAppSelector(({ auth }) => auth);
+  const { data, isLoading, error } = useGetActivitiesQuery();
+
+  console.log(data);
 
   return (
     <div className="fade-in">
